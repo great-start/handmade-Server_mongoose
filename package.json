@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start1": "cross-env PORT=5000 node process.js",
-    "start": "node process.js"
+    "start1": "cross-env PORT=5000 node lesson/process.js",
+    "start": "node lesson/fs.js"
   },
   "keywords": [],
   "author": "",

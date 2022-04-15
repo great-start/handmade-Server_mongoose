@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('lesson/path');
 
 console.log(path.join('one', 'two', 'three'));
 console.log('Склеить участки пути',path.join(__dirname,'one', 'two', 'three'))
