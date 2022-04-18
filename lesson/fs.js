@@ -1,5 +1,5 @@
-const fs = require('lesson/fs');
-const path = require('lesson/path');
+const fs = require('fs');
+const path = require('path');
 
 // create folder sync
 // fs.mkdirSync(path.resolve(__dirname,'dir'));
