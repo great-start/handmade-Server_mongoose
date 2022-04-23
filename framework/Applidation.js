@@ -1,14 +1,19 @@
 const Emitter = require('events');
 const http = require('http');
+const { bodyParse } = require('../middlewares');
 
 class Application {
     constructor() {
         this.emitter = new Emitter();
         this.server = this._createServer();
+        this.middlewares = [];
+    }
+
+    use(middleware) {
+        this.middlewares.push(middleware);
     }
 
     addRouter(router) {
-        console.log(router);
         Object.keys(router.endpoint).forEach(path => {
             const endpoint = router.endpoint[path];
             Object.keys(endpoint).forEach(method => {
@@ -16,6 +21,7 @@ class Application {
 
                 // создание событий и callback при срабатывании событий
                 this.emitter.on(this._getRouteMask(method, path), (req, res) => {
+                    this.middlewares.forEach(middleware => middleware(req, res));
                     handler(req, res);
                 });
             });
@@ -30,12 +36,14 @@ class Application {
             //     'Access-Control-Allow-Origin': '*',
             // });
 
-            // запуск события
-            const emitted = this.emitter.emit(this._getRouteMask(req.method, req.url), req, res);
+            bodyParse(req, () => {
+                // запуск события
+                const emitted = this.emitter.emit(this._getRouteMask(req.method, req.url), req, res);
 
-            if (!emitted) {
-                res.end('Page not found');
-            }
+                if (!emitted) {
+                    res.end('Page not found');
+                }
+            });
         });
     }
 
