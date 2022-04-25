@@ -1,9 +1,12 @@
+const mongoose = require('mongoose');
+
 const { app } = require('../framework');
 const { userRouter } = require('../src');
 const { parseJson, parseURL } = require('../middlewares');
+const config = require('../constants/config');
 
+const { PORT } = config;
 
-const PORT = process.env.PORT || 5000;
 
 // router.request('GET','/users', (req, res) => {
 //     res.end(`${req.url} page from my server`);
@@ -23,12 +26,20 @@ const PORT = process.env.PORT || 5000;
 //     res.end(`${req.url} page from my server`);
 // });
 
-app.use(parseURL('http://localhost:5000'));
+app.use(parseURL('http://localhost:5500'));
 app.use(parseJson);
 
 app.addRouter(userRouter);
 
-app.listen(PORT);
+app.listen(PORT, async () => {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/users');
+        console.log(`Server started at port ${PORT}`);
+    } catch (e) {
+        console.log(e.message);
+    }
+});
+
 
 // const server = http.createServer((req, res) => {
 //     // res.writeHead(200, {
@@ -80,5 +91,4 @@ app.listen(PORT);
     //     }
     //     console.log(`Server started at port ${PORT}`);
     // });
-
 

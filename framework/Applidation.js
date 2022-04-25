@@ -50,13 +50,8 @@ class Application {
         });
     }
 
-    listen(port) {
-        return this.server.listen(port, (err) => {
-            if (err) {
-                console.log(err.message);
-            }
-            console.log(`Server started at port ${port}`);
-        });
+    listen(port, callback) {
+        return this.server.listen(port, callback);
     }
 
     _getRouteMask(method, path) {
