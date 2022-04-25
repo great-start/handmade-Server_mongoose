@@ -1,6 +1,6 @@
 const { app } = require('../framework');
 const { userRouter } = require('../src');
-const { parseJson } = require('../middlewares');
+const { parseJson, parseURL } = require('../middlewares');
 
 
 const PORT = process.env.PORT || 5000;
@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 5000;
 //     res.end(`${req.url} page from my server`);
 // });
 
+app.use(parseURL('http://localhost:5000'));
 app.use(parseJson);
 
 app.addRouter(userRouter);

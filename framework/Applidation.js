@@ -21,7 +21,7 @@ class Application {
 
                 // создание событий и callback при срабатывании событий
                 this.emitter.on(this._getRouteMask(method, path), (req, res) => {
-                    this.middlewares.forEach(middleware => middleware(req, res));
+
                     handler(req, res);
                 });
             });
@@ -36,9 +36,12 @@ class Application {
             //     'Access-Control-Allow-Origin': '*',
             // });
 
+            this.middlewares.forEach(middleware => middleware(req, res));
+
             bodyParse(req, () => {
                 // запуск события
-                const emitted = this.emitter.emit(this._getRouteMask(req.method, req.url), req, res);
+
+                const emitted = this.emitter.emit(this._getRouteMask(req.method, req.pathname), req, res);
 
                 if (!emitted) {
                     res.end('Page not found');
